@@ -1,21 +1,24 @@
-// This object contains all information about departments.
+// lib/data.ts (Corrected and Secure Version)
+
+// This object contains all PUBLIC information about departments.
+// The PINs have been removed as they are a security risk on the client-side.
 export const departments = {
-  cs: { name: "Computer & Information Sciences", abbr: "CS", pin: "1234", gradient: "from-slate-600 to-slate-700" },
-  ee: { name: "Electrical Engineering", abbr: "EE", pin: "5678", gradient: "from-blue-600 to-blue-700" },
-  ce: { name: "Chemical Engineering", abbr: "CE", pin: "9012", gradient: "from-teal-600 to-teal-700" },
-  me: { name: "Mechanical Engineering", abbr: "ME", pin: "3456", gradient: "from-gray-600 to-gray-700" },
-  cv: { name: "Civil Engineering", abbr: "CV", pin: "7890", gradient: "from-indigo-600 to-indigo-700" },
-  ms: { name: "Materials Science", abbr: "MS", pin: "2468", gradient: "from-slate-700 to-slate-800" }
+  cs: { name: "Computer & Information Sciences", abbr: "CIS", gradient: "from-slate-600 to-slate-700" },
+  ee: { name: "Electrical Engineering", abbr: "EE", gradient: "from-blue-600 to-blue-700" },
+  che: { name: "Chemical Engineering", abbr: "CHE", gradient: "from-teal-600 to-teal-700" },
+  me: { name: "Mechanical Engineering", abbr: "ME", gradient: "from-gray-600 to-gray-700" },
+  phy: { name: "Physics", abbr: "PHY", gradient: "from-indigo-600 to-indigo-700" },
+  mme: { name: "Metallurgy and Materials Engineering", abbr: "MME", gradient: "from-slate-700 to-slate-800" }
 };
 
-// Initial token data for all departments. In a real app, this would come from Supabase.
+// This initial data is fine here, as it's just for the initial page load before real-time takes over.
 export const initialTokenData = {
-  cs: 87,
-  ee: 112,
-  ce: 45,
-  me: 73,
-  cv: 156,
-  ms: 29
+  cs: 1,
+  ee: 1,
+  ce: 4,
+  me: 7,
+  cv: 1,
+  ms: 1
 };
 
 // Define a type for our department keys for better TypeScript support

@@ -1,39 +1,39 @@
 const departments = [
   {
     id: "cs",
-    abbreviation: "CS",
+    abbreviation: "CIS",
     gradient: "from-slate-600 to-slate-700",
-    currentToken: 87
+    currentToken: 1
   },
   {
     id: "ee",
     abbreviation: "EE", 
     gradient: "from-blue-600 to-blue-700",
-    currentToken: 112
+    currentToken: 1
   },
   {
-    id: "ce",
-    abbreviation: "CE",
+    id: "che",
+    abbreviation: "CHE",
     gradient: "from-teal-600 to-teal-700",
-    currentToken: 45
+    currentToken: 1
   },
   {
     id: "me",
     abbreviation: "ME",
     gradient: "from-gray-600 to-gray-700",
-    currentToken: 73
+    currentToken: 1
   },
   {
-    id: "cv",
-    abbreviation: "CV",
+    id: "phy",
+    abbreviation: "PHY",
     gradient: "from-indigo-600 to-indigo-700",
-    currentToken: 156
+    currentToken: 1
   },
   {
-    id: "ms",
-    abbreviation: "MS",
+    id: "mme",
+    abbreviation: "MME",
     gradient: "from-slate-700 to-slate-800",
-    currentToken: 29
+    currentToken: 1
   }
 ];
 
@@ -83,7 +83,7 @@ export function Dashboard({ tokenData }: DashboardProps) {
                   {/* Token Number - Main Focus */}
                   <div className="space-y-3">
                     <div className="text-7xl font-bold leading-none tracking-tight">
-                      {String(currentToken).padStart(3, '0')}
+                      {currentToken<10 ? String(currentToken).padStart(2, '0'): String(currentToken)}
                     </div>
                     <div className="text-lg font-medium opacity-80 tracking-wide">
                       TOKEN
