@@ -2,7 +2,7 @@ const departments = [
   {
     id: "cs",
     abbreviation: "CIS",
-    gradient: "from-slate-600 to-slate-700",
+    gradient: "from-slate-700 to-slate-800",
     currentToken: 1
   },
   {
@@ -14,25 +14,25 @@ const departments = [
   {
     id: "che",
     abbreviation: "CHE",
-    gradient: "from-teal-600 to-teal-700",
+    gradient: "from-purple-600 to-purple-700",
     currentToken: 1
   },
   {
     id: "me",
     abbreviation: "ME",
-    gradient: "from-gray-600 to-gray-700",
+    gradient: "from-yellow-600 to-yellow-700",
     currentToken: 1
   },
   {
     id: "phy",
     abbreviation: "PHY",
-    gradient: "from-indigo-600 to-indigo-700",
+    gradient: "from-emerald-600 to-emerald-700",
     currentToken: 1
   },
   {
     id: "mme",
     abbreviation: "MME",
-    gradient: "from-slate-700 to-slate-800",
+    gradient: "from-rose-600 to-rose-700",
     currentToken: 1
   }
 ];

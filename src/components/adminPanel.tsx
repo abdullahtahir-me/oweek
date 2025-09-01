@@ -1,4 +1,4 @@
-// components/adminPanel.tsx
+// components/adminPanel.tsx (Final, Promise-Safe Version)
 
 "use client"
 import { useState, useEffect } from "react";
@@ -6,7 +6,7 @@ import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Alert, AlertDescription } from "./ui/alert";
-import { Lock, Unlock, Plus, Minus } from "lucide-react";
+import { Lock, Unlock, Plus, Minus, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { departments, DepartmentId } from "@/lib/data";
 
@@ -23,28 +23,25 @@ export function AdminPanel({ departmentId, currentToken, onTokenUpdate, onUnlock
   const [pinInput, setPinInput] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false); // <-- ADD THIS NEW STATE
 
   const department = departments[departmentId];
 
-  // Effect for the auto-lock inactivity timer
+  // Inactivity timer (no changes needed here)
   useEffect(() => {
     let inactivityTimer: NodeJS.Timeout;
     const resetTimer = () => {
       clearTimeout(inactivityTimer);
-      if (!isLocked) { // Only run the timer if the panel is unlocked
+      if (!isLocked) {
         inactivityTimer = setTimeout(() => {
           setIsLocked(true);
           setError("Panel locked due to 5 minutes of inactivity.");
-        }, 300000); // 5 minutes (300,000 ms)
+        }, 300000);
       }
     };
-
-    // Listen for any user activity to reset the timer
     window.addEventListener('mousemove', resetTimer);
     window.addEventListener('keypress', resetTimer);
-    resetTimer(); // Start the timer
-
-    // Cleanup function to remove listeners when the component is unmounted
+    resetTimer();
     return () => {
       clearTimeout(inactivityTimer);
       window.removeEventListener('mousemove', resetTimer);
@@ -52,9 +49,8 @@ export function AdminPanel({ departmentId, currentToken, onTokenUpdate, onUnlock
     };
   }, [isLocked]);
 
-  if (!department) return <div>Invalid Department</div>; // Basic safety check
+  if (!department) return <div>Invalid Department</div>;
 
-  // Function to handle the unlock button click
   const handleUnlock = async () => {
     setIsSubmitting(true);
     setError("");
@@ -69,18 +65,47 @@ export function AdminPanel({ departmentId, currentToken, onTokenUpdate, onUnlock
     setIsSubmitting(false);
   };
 
-  // A wrapper function to call the update prop and handle errors
-  const handleUpdate = async (newToken: number) => {
+  // --- THIS IS THE CORRECTED PART ---
+
+  // Make the increment function async
+  const handleIncrement = async () => {
+    if (isUpdating) return;
+
+    setIsUpdating(true);
+    setError("");
     try {
-      await onTokenUpdate(newToken);
-      setError(""); // Clear previous errors on success
+      // Directly await the onTokenUpdate function passed from the parent
+      await onTokenUpdate(currentToken + 1);
+      setError(""); // Clear any previous errors on success
     } catch (err: any) {
-      setError(err.message); // Display error message if the update fails
+      // If the promise rejects, the catch block will run
+      setError(err.message);
+    }finally {
+      // This block runs after the try/catch is complete, ensuring the spinner always stops
+      setIsUpdating(false);
     }
   };
 
-  const handleIncrement = () => handleUpdate(currentToken + 1);
-  const handleDecrement = () => { if (currentToken > 0) handleUpdate(currentToken - 1); };
+  // Make the decrement function async
+  const handleDecrement = async () => {
+    if (isUpdating || currentToken <= 0) return;
+
+    setIsUpdating(true);
+    setError("");
+    if (currentToken > 0) {
+      try {
+        // Directly await the onTokenUpdate function
+        await onTokenUpdate(currentToken - 1);
+        setError("");
+      } catch (err: any) {
+        setError(err.message);
+      }finally {
+      setIsUpdating(false);
+    }
+    }
+  };
+  
+  // --- END OF CORRECTED PART ---
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-blue-50 to-slate-100 p-6 flex items-center justify-center">
@@ -103,7 +128,6 @@ export function AdminPanel({ departmentId, currentToken, onTokenUpdate, onUnlock
           </div>
 
           {isLocked ? (
-            // --- LOCKED VIEW ---
             <div className="space-y-4">
               <h3 className="text-center font-semibold text-slate-700">Panel Locked</h3>
               <Input type="password" value={pinInput} onChange={(e) => setPinInput(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && handleUnlock()} placeholder="Enter PIN to Unlock" className="text-center text-lg" autoFocus />
@@ -112,11 +136,36 @@ export function AdminPanel({ departmentId, currentToken, onTokenUpdate, onUnlock
               </Button>
             </div>
           ) : (
-            // --- UNLOCKED VIEW ---
             <div>
-              <div className="flex gap-4 mb-6">
-                <Button onClick={handleDecrement} disabled={currentToken <= 0} variant="outline" size="lg" className="flex-1 py-6 text-xl"><Minus className="h-6 w-6" /></Button>
-                <Button onClick={handleIncrement} size="lg" className="flex-1 py-6 text-xl bg-green-600 hover:bg-green-700"><Plus className="h-6 w-6" /></Button>
+               <div className="flex gap-4 mb-6">
+                <Button 
+                  onClick={handleDecrement} 
+                  // Disable the button if it's updating OR if the token is already at 0
+                  disabled={isUpdating || currentToken <= 0} 
+                  variant="outline" 
+                  size="lg" 
+                  className="flex-1 py-6 text-xl"
+                >
+                  {isUpdating ? (
+                    <Loader2 className="h-6 w-6 animate-spin" />
+                  ) : (
+                    <Minus className="h-6 w-6" />
+                  )}
+                </Button>
+                
+                <Button 
+                  onClick={handleIncrement} 
+                  // Disable the button if an update is in progress
+                  disabled={isUpdating} 
+                  size="lg" 
+                  className="flex-1 py-6 text-xl bg-green-600 hover:bg-green-700"
+                >
+                  {isUpdating ? (
+                    <Loader2 className="h-6 w-6 animate-spin" />
+                  ) : (
+                    <Plus className="h-6 w-6" />
+                  )}
+                </Button>
               </div>
               <div className="mt-6 pt-4 border-t">
                 <Button onClick={() => setIsLocked(true)} variant="outline" size="sm" className="w-full text-gray-600"><Lock className="h-4 w-4 mr-2" /> Lock Panel</Button>

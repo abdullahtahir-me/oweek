@@ -8,10 +8,16 @@ import { AdminPanel } from "@/components/adminPanel";
 import { DepartmentId } from "@/lib/data";
 import { supabase } from "@/lib/supabase";
 import { Session } from "@supabase/supabase-js"; // Import the Session type
+import React from "react";
 
-export default function DepartmentAdminPage({ params }: { params: { department: string } }) {
+export default function DepartmentAdminPage({ params }: {
+  params: Promise<{ department: string }>;
+}) {
   const router = useRouter();
-  const departmentId = params.department as DepartmentId;
+
+  // ✅ unwrap params using React.use()
+  const { department } = React.use(params);
+  const departmentId = department as DepartmentId;
 
   // --- NEW STATE TO MANAGE THE ENTIRE PAGE LIFECYCLE ---
   const [session, setSession] = useState<Session | null>(null);
