@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Alert, AlertDescription } from "./ui/alert";
 import { Lock, Unlock, Plus, Minus, Loader2 } from "lucide-react";
-import Link from "next/link";
+// import Link from "next/link";
 import { departments, DepartmentId } from "@/lib/data";
 
 interface AdminPanelProps {
