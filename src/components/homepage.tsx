@@ -3,37 +3,38 @@ const departments = [
     id: "cs",
     abbreviation: "CIS",
     gradient: "from-slate-700 to-slate-800",
-    currentToken: 1
+    currentToken: 0
   },
   {
     id: "ee",
     abbreviation: "EE", 
     gradient: "from-blue-600 to-blue-700",
-    currentToken: 1
+    currentToken: 0
   },
   {
     id: "che",
     abbreviation: "CHE",
-    gradient: "from-purple-600 to-purple-700",
-    currentToken: 1
+    gradient: "from-yellow-600 to-yellow-700",
+    currentToken: 0
   },
   {
     id: "me",
     abbreviation: "ME",
-    gradient: "from-yellow-600 to-yellow-700",
-    currentToken: 1
+    gradient: "from-purple-600 to-purple-700",
+    
+    currentToken: 0
   },
   {
     id: "phy",
     abbreviation: "PHY",
     gradient: "from-emerald-600 to-emerald-700",
-    currentToken: 1
+    currentToken: 0
   },
   {
     id: "mme",
     abbreviation: "MME",
     gradient: "from-rose-600 to-rose-700",
-    currentToken: 1
+    currentToken: 0
   }
 ];
 
