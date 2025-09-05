@@ -35,8 +35,8 @@ export function AdminPanel({ departmentId, currentToken, onTokenUpdate, onUnlock
       if (!isLocked) {
         inactivityTimer = setTimeout(() => {
           setIsLocked(true);
-          setError("Panel locked due to 5 minutes of inactivity.");
-        }, 300000);
+          setError("Panel locked due to 10 minutes of inactivity.");
+        }, 600000);
       }
     };
     window.addEventListener('mousemove', resetTimer);

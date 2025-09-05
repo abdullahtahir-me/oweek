@@ -12,6 +12,9 @@ export default function DashboardPage() {
   const [tokenData, setTokenData] = useState<{ [key: string]: number }>({});
   const [isLoading, setIsLoading] = useState(true);
   const [time, setTime] = useState("");
+
+
+
   useEffect(() => {
     const update = () => setTime(new Date().toLocaleTimeString());
     update();
@@ -73,6 +76,9 @@ export default function DashboardPage() {
     };
   }, []); // The empty array ensures this runs only once when the component mounts
 
+
+
+  
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen text-xl font-semibold">
@@ -86,7 +92,7 @@ export default function DashboardPage() {
       <Dashboard tokenData={tokenData} />
 
       {/* Navigation Helper */}
-      <div className="flex items-center fixed top-8 right-8 space-x-4 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-4 max-w-xs border border-gray-200">
+      <div className="flex items-center fixed top-8 right-8 space-x-4 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg sm:p-4 max-w-xs sm:border border-gray-200">
         <h2 className="max-sm:hidden text-3xl font-semibold">
           {time}
         </h2>
